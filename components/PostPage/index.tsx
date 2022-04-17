@@ -1,13 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useGetPostCommentsQuery, useGetPostQuery } from "../../redux/api";
-import { Col, Layout, PageHeader, Row, Typography } from "antd";
+import { Card, Col, Layout, PageHeader, Row, Typography } from "antd";
 import styles from "./PostPage.module.css";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Post } from "..";
 
-const { Header, Content } = Layout;
-const { Text } = Typography;
+const { Content } = Layout;
 
 const PostPage = () => {
   const router = useRouter();
@@ -35,17 +34,21 @@ const PostPage = () => {
         }}
       />
       <Content>
-        <Row>
-          <Col span={24}>
-            {isLoading ? (
-              <LoadingOutlined />
-            ) : (
-              isSuccess &&
-              postData && (
+        <Row justify="center">
+          {isLoading ? (
+            <Col span={24} className={styles.col}>
+              <Card bordered={false}>
+                <LoadingOutlined />
+              </Card>
+            </Col>
+          ) : (
+            isSuccess &&
+            postData && (
+              <Col span={24}>
                 <Post data={{ post: postData, comments: commentData || [] }} />
-              )
-            )}
-          </Col>
+              </Col>
+            )
+          )}
         </Row>
       </Content>
     </Layout>

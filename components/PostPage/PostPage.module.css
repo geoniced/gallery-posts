@@ -1,8 +1,15 @@
 .layout {
   height: 100%;
+  background-color: white;
 }
 
 .header {
   background-color: white;
   border: none;
+}
+
+.col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

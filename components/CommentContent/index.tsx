@@ -18,7 +18,7 @@ const CommentContent: FC<CommentContentProps> = (props) => {
             <Text strong>{name}</Text> <Text>{body}</Text>
           </Text>
         }
-        actions={[<span key={`comment-reply-${id}`}>Reply</span>]}
+        actions={[<Text key={`comment-reply-${id}`}>Ответить</Text>]}
       />
     </Card>
   );

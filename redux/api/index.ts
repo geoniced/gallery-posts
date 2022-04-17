@@ -9,8 +9,8 @@ export const galleryApi = createApi({
     baseUrl: "https://jsonplaceholder.typicode.com/",
   }),
   endpoints: (builder) => ({
-    getPosts: builder.query<Post[], void>({
-      query: () => `/photos?_page=1&_limit=21`,
+    getPosts: builder.query<Post[], number>({
+      query: (page = 1) => `/photos?_page=${page}&_limit=21`,
     }),
     getPost: builder.query<Post, string | undefined>({
       query: (id) => `/photos/${id}`,

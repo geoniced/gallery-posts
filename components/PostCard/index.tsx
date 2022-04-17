@@ -5,10 +5,11 @@ import Link from "next/link";
 interface PostProps {
   to: string;
   src: string;
+  height: number;
 }
 
 const PostCard: FC<PostProps> = (props) => {
-  const { to, src } = props;
+  const { to, src, height } = props;
   return (
     <Link href={to} passHref>
       <Image
@@ -16,7 +17,7 @@ const PostCard: FC<PostProps> = (props) => {
         preview={false}
         src={src}
         alt={"image"}
-        height={200}
+        height={height}
       />
     </Link>
   );
