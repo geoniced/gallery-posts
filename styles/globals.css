@@ -11,6 +11,19 @@ a {
   text-decoration: none;
 }
 
-* {
+*,
+*::after,
+*::before {
   box-sizing: border-box;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.ant-card-cover {
+  display: flex;
+  flex-direction: column;
 }

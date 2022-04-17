@@ -1,0 +1,13 @@
+.layout {
+  height: 100%;
+}
+
+.header {
+  background-color: white;
+}
+
+.col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
