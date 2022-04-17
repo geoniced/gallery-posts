@@ -4,10 +4,18 @@ import {
   Comment as CommentComponent,
   Divider,
   Form,
+  FormInstance,
   Input,
 } from "antd";
 import Image from "next/image";
-import React, { ChangeEventHandler, FC, useMemo, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  FC,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useWindowSize } from "react-use";
 import { CommentContent } from "..";
 import { Comment } from "../../types/comment";
@@ -22,6 +30,8 @@ const Post: FC<PostProps> = (props) => {
   const { post, comments } = props.data;
   const { url, title } = post;
 
+  const commentRef = useRef<HTMLFormElement>(null);
+
   const [userComments, setUserComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -32,6 +42,15 @@ const Post: FC<PostProps> = (props) => {
     setCommentText(evt.target.value);
   };
 
+  const onReplyComment = useCallback((userName: UserName) => {
+    setCommentText(
+      (prev) =>
+        prev.trim().split(" ").concat(`@${userName}`).join(" ").trim() + " "
+    );
+    commentRef.current &&
+      commentRef.current.resizableTextArea.textArea.scrollIntoView();
+  }, []);
+
   const onSubmit = () => {
     const newId =
       [...comments, ...userComments].reduce(
@@ -39,19 +58,20 @@ const Post: FC<PostProps> = (props) => {
         0
       ) + 1;
     setSubmitting(true);
-    setUserComments((prev) => [
-      ...prev,
-      {
-        postId: post.id,
-        id: newId,
-        name: "Вы",
-        email: "user@example.com",
-        body: commentText.trim(),
-      },
-    ]);
 
     setTimeout(() => {
       setSubmitting(false);
+      setUserComments((prev) => [
+        ...prev,
+        {
+          postId: post.id,
+          id: newId,
+          name: "Вы",
+          email: "user@example.com",
+          body: commentText.trim(),
+        },
+      ]);
+
       setCommentText("");
     }, 1000);
   };
@@ -73,7 +93,11 @@ const Post: FC<PostProps> = (props) => {
       <Divider>Комментарии</Divider>
 
       {totalComments.map((comment) => (
-        <CommentContent key={comment.id} comment={comment} />
+        <CommentContent
+          key={comment.id}
+          comment={comment}
+          onReply={onReplyComment}
+        />
       ))}
 
       <Divider>Оставьте свой комментарий</Divider>
@@ -83,7 +107,12 @@ const Post: FC<PostProps> = (props) => {
           content={
             <Form>
               <Form.Item>
-                <TextArea value={commentText} onChange={onCommentChange} />
+                <TextArea
+                  rows={1}
+                  ref={commentRef as any}
+                  value={commentText}
+                  onChange={onCommentChange}
+                />
               </Form.Item>
               <Form.Item>
                 <Button

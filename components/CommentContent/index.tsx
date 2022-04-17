@@ -5,10 +5,11 @@ import { Comment } from "../../types/comment";
 
 interface CommentContentProps {
   comment: Comment;
+  onReply: (name: UserName) => void;
 }
 
-const CommentContent: FC<CommentContentProps> = (props) => {
-  const { name, body, id } = props.comment;
+const CommentContent: FC<CommentContentProps> = ({ comment, onReply }) => {
+  const { name, body, id } = comment;
 
   return (
     <Card bordered={false}>
@@ -18,7 +19,16 @@ const CommentContent: FC<CommentContentProps> = (props) => {
             <Text strong>{name}</Text> <Text>{body}</Text>
           </Text>
         }
-        actions={[<Text key={`comment-reply-${id}`}>Ответить</Text>]}
+        actions={[
+          <Text
+            key={`comment-reply-${id}`}
+            onClick={() => {
+              onReply(name);
+            }}
+          >
+            Ответить
+          </Text>,
+        ]}
       />
     </Card>
   );
