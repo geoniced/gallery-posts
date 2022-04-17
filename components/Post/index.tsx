@@ -112,6 +112,7 @@ const Post: FC<PostProps> = (props) => {
                   ref={commentRef as any}
                   value={commentText}
                   onChange={onCommentChange}
+                  autoSize
                 />
               </Form.Item>
               <Form.Item>
